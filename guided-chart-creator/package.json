@@ -12,7 +12,7 @@
   "dependencies": {
     "@luzmo/analytics-components-kit": "1.0.2",
     "@luzmo/icons": "^1.0.1-alpha.33",
-    "@luzmo/react-embed": "6.4.0",
+    "@luzmo/react-embed": "6.8.3",
     "@radix-ui/react-accordion": "1.2.12",
     "@radix-ui/react-alert-dialog": "1.1.15",
     "@radix-ui/react-aspect-ratio": "1.1.8",
@@ -44,7 +44,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.564.0",
-    "next": "16.1.6",
+    "next": "16.2.7",
     "next-themes": "^0.4.6",
     "react": "19.2.4",
     "react-dom": "19.2.4",
