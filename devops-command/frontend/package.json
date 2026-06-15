@@ -24,12 +24,12 @@
   "private": true,
   "packageManager": "npm@9.2.0",
   "dependencies": {
-    "@angular/common": "21.1.4",
-    "@angular/compiler": "21.1.4",
-    "@angular/core": "21.1.4",
-    "@angular/forms": "21.1.4",
-    "@angular/platform-browser": "21.1.4",
-    "@angular/router": "21.1.4",
+    "@angular/common": "22.0.1",
+    "@angular/compiler": "22.0.1",
+    "@angular/core": "22.0.1",
+    "@angular/forms": "22.0.1",
+    "@angular/platform-browser": "22.0.1",
+    "@angular/router": "22.0.1",
     "@luzmo/analytics-components-kit": "1.0.2",
     "@luzmo/dashboard-contents-types": "1.0.28",
     "@luzmo/ngx-embed": "8.3.0",
@@ -37,14 +37,14 @@
     "tslib": "2.8.1"
   },
   "devDependencies": {
-    "@angular/build": "21.1.4",
+    "@angular/build": "22.0.1",
     "@angular/cli": "21.1.4",
-    "@angular/compiler-cli": "21.1.4",
+    "@angular/compiler-cli": "22.0.1",
     "@tailwindcss/postcss": "4.1.18",
     "jsdom": "28.1.0",
     "postcss": "8.5.6",
     "tailwindcss": "4.1.18",
     "typescript": "5.9.3",
-    "vitest": "4.0.18"
+    "vitest": "4.1.9"
   }
 }
