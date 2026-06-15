@@ -11,25 +11,25 @@
     "test:coverage": "ng test --coverage"
   },
   "dependencies": {
-    "@angular/common": "21.0.8",
+    "@angular/common": "22.0.1",
     "@angular/compiler": "21.0.8",
-    "@angular/core": "21.0.8",
-    "@angular/forms": "21.0.8",
-    "@angular/platform-browser": "21.0.8",
-    "@angular/router": "21.0.8",
-    "@luzmo/analytics-components-kit": "1.0.1-alpha.118",
+    "@angular/core": "21.2.17",
+    "@angular/forms": "22.0.1",
+    "@angular/platform-browser": "22.0.1",
+    "@angular/router": "22.0.1",
+    "@luzmo/analytics-components-kit": "1.0.2",
     "@luzmo/dashboard-contents-types": "1.0.21",
     "@luzmo/icons": "1.0.1-alpha.30",
     "@luzmo/lucero": "1.0.1-alpha.54",
-    "@luzmo/ngx-embed": "8.1.2",
+    "@luzmo/ngx-embed": "8.7.5",
     "rxjs": "7.8.2",
     "tslib": "2.8.1"
   },
   "devDependencies": {
-    "@angular/build": "21.0.5",
+    "@angular/build": "22.0.1",
     "@angular/cli": "21.0.5",
     "@angular/compiler-cli": "21.0.8",
-    "@angular/platform-browser-dynamic": "21.0.8",
+    "@angular/platform-browser-dynamic": "22.0.1",
     "@vitest/coverage-v8": "4.0.17",
     "autoprefixer": "10.4.23",
     "jsdom": "27.4.0",
@@ -38,7 +38,7 @@
     "postcss": "8.5.6",
     "tailwindcss": "3.3.5",
     "typescript": "5.9.3",
-    "vitest": "4.0.17"
+    "vitest": "4.1.0"
   },
   "overrides": {
     "vite": "8.0.0-beta.0"
