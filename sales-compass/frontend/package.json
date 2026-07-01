@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@angular/build": "22.0.4",
-    "@angular/cli": "21.0.5",
+    "@angular/cli": "22.0.4",
     "@angular/compiler-cli": "22.0.4",
     "@angular/platform-browser-dynamic": "22.0.4",
     "@vitest/coverage-v8": "4.0.17",
@@ -37,7 +37,7 @@
     "oxlint": "1.39.0",
     "postcss": "8.5.6",
     "tailwindcss": "3.3.5",
-    "typescript": "5.9.3",
+    "typescript": "6.0.3",
     "vitest": "4.0.17"
   },
   "overrides": {
