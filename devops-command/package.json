@@ -11,6 +11,6 @@
     "build:ci": "cd frontend && npm install && npm run build:ci"
   },
   "devDependencies": {
-    "concurrently": "9.2.1"
+    "concurrently": "9.2.3"
   }
 }
