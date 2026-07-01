@@ -1,0 +1,13 @@
+node_modules/
+.next/
+out/
+.DS_Store
+*.log
+tsconfig.tsbuildinfo
+eslint-report.json
+next-env.d.ts
+
+# Local env files — never commit embed credentials
+.env
+.env.*
+!.env.example
