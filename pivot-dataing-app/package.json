@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@luzmo/analytics-components-kit": "1.0.2",
-    "@luzmo/embed": "^6.11.0",
-    "@luzmo/lucero": "^1.0.1-alpha.66",
+    "@luzmo/embed": "^6.13.5",
+    "@luzmo/lucero": "^1.0.2",
     "autoprefixer": "^10.4.27",
     "framer-motion": "^12.38.0",
     "postcss": "^8.5.8",
