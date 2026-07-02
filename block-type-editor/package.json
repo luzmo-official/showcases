@@ -19,7 +19,7 @@
     "@luzmo/analytics-components-kit": "1.0.2",
     "@luzmo/embed": "^6.9.0",
     "@luzmo/icons": "^1.0.1-alpha.31",
-    "@luzmo/lucero": "^1.0.1-alpha.60"
+    "@luzmo/lucero": "^1.0.2"
   },
   "devDependencies": {
     "oxfmt": "^0.23.0",
