@@ -60,6 +60,7 @@ jobs:
             { name: 'flexcalidraw', outputFolder: 'excalidraw-app/build/' },
             { name: 'ack-maps-builder', outputFolder: 'dist/' },
             { name: 'sustain-iq', outputFolder: 'dist/' },
+            { name: 'routedata', outputFolder: 'out/' },
           ];
 
           const changedFiles = fs.readFileSync('changed-files.txt', 'utf8')
@@ -139,6 +140,14 @@ jobs:
           echo "VITE_LUZMO_EMBED_KEY=${{ secrets.SUSTAIN_IQ_VITE_LUZMO_EMBED_KEY }}" > .env
           echo "VITE_LUZMO_EMBED_TOKEN=${{ secrets.SUSTAIN_IQ_VITE_LUZMO_EMBED_TOKEN }}" >> .env
           echo "VITE_LUZMO_DATASET_ID=${{ secrets.SUSTAIN_IQ_VITE_LUZMO_DATASET_ID }}" >> .env
+
+      - name: Write routedata .env.local
+        if: matrix.name == 'routedata'
+        working-directory: routedata
+        run: |
+          echo "ROUTEDATA_LUZMO_EMBED_KEY=${{ secrets.ROUTEDATA_LUZMO_EMBED_KEY }}" > .env.local
+          echo "ROUTEDATA_LUZMO_EMBED_TOKEN=${{ secrets.ROUTEDATA_LUZMO_EMBED_TOKEN }}" >> .env.local
+          echo "ROUTEDATA_LUZMO_DATASET_ID=${{ secrets.ROUTEDATA_LUZMO_DATASET_ID }}" >> .env.local
 
       - name: Clone flexcalidraw repo
         if: matrix.name == 'flexcalidraw'
