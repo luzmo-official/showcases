@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@luzmo/analytics-components-kit": "1.0.2",
-    "@luzmo/embed": "^6.9.0",
+    "@luzmo/embed": "^6.13.5",
     "@luzmo/icons": "^1.0.1-alpha.31",
     "@luzmo/lucero": "^1.0.2",
     "@luzmo/react-embed": "^6.4.0",
