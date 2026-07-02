@@ -103,7 +103,6 @@ updates:
     open-pull-requests-limit: 1
     cooldown:
       default-days: 7
-      semver-major-days: 30
     commit-message:
       prefix: "chore(ci)"
       include: "scope"
