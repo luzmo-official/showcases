@@ -1,0 +1,121 @@
+version: 2
+
+updates:
+  - package-ecosystem: "npm"
+    directories:
+      - "/ack-maps-builder"
+      - "/block-type-editor"
+      - "/cfo-cockpit"
+      - "/custom-chart-example/*"
+      - "/dashboard-filter-panel"
+      - "/dashboard-to-flex-grid"
+      - "/devops-command"
+      - "/devops-command/*"
+      - "/euro2024"
+      - "/fifa2026"
+      - "/guided-chart-creator"
+      - "/newspaper"
+      - "/pivot-dataing-app"
+      - "/report-builder"
+      - "/routedata"
+      - "/sales-compass"
+      - "/sales-compass/*"
+      - "/sustain-iq"
+      - "/the-constructor"
+      - "/wearables-dashboard"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "05:00"
+      timezone: "Europe/Brussels"
+    target-branch: "main"
+    open-pull-requests-limit: 3
+    cooldown:
+      semver-patch-days: 2
+      semver-minor-days: 7
+      semver-major-days: 30
+    commit-message:
+      prefix: "chore(deps)"
+      include: "scope"
+    groups:
+      angular-patch-minor:
+        patterns:
+          - "@angular/*"
+          - "@angular-devkit/*"
+          - "@ngtools/*"
+        update-types:
+          - "patch"
+          - "minor"
+        group-by: "dependency-name"
+      angular-major:
+        patterns:
+          - "@angular/*"
+          - "@angular-devkit/*"
+          - "@ngtools/*"
+        update-types:
+          - "major"
+        group-by: "dependency-name"
+      luzmo-patch-minor:
+        patterns:
+          - "@luzmo/*"
+        update-types:
+          - "patch"
+          - "minor"
+        group-by: "dependency-name"
+      luzmo-major:
+        patterns:
+          - "@luzmo/*"
+        update-types:
+          - "major"
+        group-by: "dependency-name"
+      misc-patch-minor:
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "@angular/*"
+          - "@angular-devkit/*"
+          - "@ngtools/*"
+          - "@luzmo/*"
+        update-types:
+          - "patch"
+          - "minor"
+        group-by: "dependency-name"
+      misc-major:
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "@angular/*"
+          - "@angular-devkit/*"
+          - "@ngtools/*"
+          - "@luzmo/*"
+        update-types:
+          - "major"
+        group-by: "dependency-name"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "05:30"
+      timezone: "Europe/Brussels"
+    target-branch: "main"
+    open-pull-requests-limit: 1
+    cooldown:
+      default-days: 7
+      semver-major-days: 30
+    commit-message:
+      prefix: "chore(ci)"
+      include: "scope"
+    groups:
+      actions-patch-minor:
+        patterns:
+          - "*"
+        update-types:
+          - "patch"
+          - "minor"
+      actions-major:
+        patterns:
+          - "*"
+        update-types:
+          - "major"
