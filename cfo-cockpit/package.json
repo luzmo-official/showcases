@@ -10,14 +10,14 @@
     "watch": "ng build --watch --configuration development"
   },
   "dependencies": {
-    "@angular/animations": "^22.0.4",
-    "@angular/common": "^22.0.4",
-    "@angular/compiler": "^22.0.4",
-    "@angular/core": "^22.0.4",
-    "@angular/forms": "^22.0.4",
-    "@angular/platform-browser": "^22.0.4",
-    "@angular/platform-browser-dynamic": "^22.0.4",
-    "@angular/router": "^22.0.4",
+    "@angular/animations": "^22.0.5",
+    "@angular/common": "^22.0.5",
+    "@angular/compiler": "^22.0.5",
+    "@angular/core": "^22.0.5",
+    "@angular/forms": "^22.0.5",
+    "@angular/platform-browser": "^22.0.5",
+    "@angular/platform-browser-dynamic": "^22.0.5",
+    "@angular/router": "^22.0.5",
     "@ctrl/tinycolor": "^4.1.0",
     "@floating-ui/dom": "^1.6.12",
     "@internationalized/date": "^3.8.0",
@@ -43,7 +43,7 @@
   "devDependencies": {
     "@angular-devkit/build-angular": "^22.0.5",
     "@angular/cli": "^22.0.5",
-    "@angular/compiler-cli": "^22.0.4",
+    "@angular/compiler-cli": "^22.0.5",
     "typescript": "~6.0.3"
   }
 }
