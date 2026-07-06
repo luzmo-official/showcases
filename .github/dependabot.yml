@@ -18,8 +18,6 @@ updates:
       - "/pivot-dataing-app"
       - "/report-builder"
       - "/routedata"
-      - "/sales-compass"
-      - "/sales-compass/*"
       - "/sustain-iq"
       - "/the-constructor"
       - "/wearables-dashboard"
