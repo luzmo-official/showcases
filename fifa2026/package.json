@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@luzmo/analytics-components-kit": "1.0.2",
-    "@luzmo/embed": "^6.9.0",
+    "@luzmo/embed": "^6.13.5",
     "flag-icons": "^7.5.0",
     "gridstack": "^12.4.2",
     "vue": "^3.5.25",
