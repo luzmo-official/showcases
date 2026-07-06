@@ -15,7 +15,7 @@
     "@luzmo/embed": "^6.13.5",
     "@luzmo/icons": "^1.0.1-alpha.31",
     "@luzmo/lucero": "^1.0.2",
-    "@luzmo/react-embed": "^6.4.0",
+    "@luzmo/react-embed": "^6.8.5",
     "@react-leaflet/core": "^3.0.0",
     "@turf/turf": "^7.3.4",
     "leaflet": "^1.9.4",

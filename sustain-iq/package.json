@@ -13,7 +13,7 @@
     "@luzmo/analytics-components-kit": "1.0.2",
     "@luzmo/icons": "^1.0.1-alpha.33",
     "@luzmo/lucero": "^1.0.1-alpha.63",
-    "@luzmo/react-embed": "^6.8.0",
+    "@luzmo/react-embed": "^6.8.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-grid-layout": "^1.4.4"
