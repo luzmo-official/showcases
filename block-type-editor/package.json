@@ -26,7 +26,7 @@
     "oxlint": "^1.38.0",
     "sass": "^1.89.1",
     "typescript": "^5.8.3",
-    "ultracite": "^7.0.8",
+    "ultracite": "^7.9.2",
     "vite": "^8.1.3"
   }
 }
