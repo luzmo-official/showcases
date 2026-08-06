@@ -1,0 +1,10 @@
+{
+  "alice@company.com": {
+    "luzmoKey": "your-luzmo-api-key-for-alice",
+    "luzmoToken": "your-luzmo-api-token-for-alice"
+  },
+  "bob@company.com": {
+    "luzmoKey": "your-luzmo-api-key-for-bob",
+    "luzmoToken": "your-luzmo-api-token-for-bob"
+  }
+}
