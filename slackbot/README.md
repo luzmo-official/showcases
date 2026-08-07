@@ -6,13 +6,13 @@ tags:
   - TypeScript
   - AI
 author: "Luzmo"
-image: "https://cdn.luzmo.com/showcases/slackbot.png"
+image: "https://cdn.luzmo.com/showcases/slackbot-example-ss.png"
 url: "https://github.com/luzmo-official/showcases/tree/main/slackbot"
 ---
 
 # Luzmo Analyst Slackbot
 
-![Luzmo Analyst Slackbot](https://cdn.luzmo.com/showcases/slackbot.png)
+![Luzmo Analyst Slackbot](https://cdn.luzmo.com/showcases/slackbot-example-ss.png)
 
 A Slack bot that answers data questions via Luzmo's hosted **`/AIPrompt`** API (`agent: analyst`), streams progress updates into Slack, and uploads chart PNGs when Luzmo returns a visualization.
 
