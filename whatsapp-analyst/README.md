@@ -6,13 +6,13 @@ tags:
   - TypeScript
   - AI
 author: "Luzmo"
-image: "https://cdn.luzmo.com/showcases/whatsapp-analyst.png"
+image: "https://cdn.luzmo.com/showcases/whatsapp-example-ss.png"
 url: "https://github.com/luzmo-official/showcases/tree/main/whatsapp-analyst"
 ---
 
 # WhatsApp Analyst
 
-![WhatsApp Analyst](https://cdn.luzmo.com/showcases/whatsapp-analyst.png)
+![WhatsApp Analyst](https://cdn.luzmo.com/showcases/whatsapp-example-ss.png)
 
 A WhatsApp bot that answers dataset questions via Luzmo’s hosted **`/AIPrompt`** API (`agent: analyst`), replies with WhatsApp-formatted text, and uploads chart PNGs when Luzmo returns a visualization.
 
