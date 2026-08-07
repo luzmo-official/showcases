@@ -1,11 +1,25 @@
+---
+title: "Luzmo Analyst Slackbot"
+description: "A Slack bot that answers data questions via Luzmo's hosted /AIPrompt API (agent: analyst), streams progress updates into Slack, and uploads chart PNGs when Luzmo returns a visualization."
+tags:
+  - Node.js
+  - TypeScript
+  - AI
+author: "Luzmo"
+image: "https://cdn.luzmo.com/showcases/slackbot-example-ss.png"
+url: "https://github.com/luzmo-official/showcases/tree/main/slackbot"
+---
+
 # Luzmo Analyst Slackbot
 
-A Slack bot that answers data questions via Luzmo's hosted **`/AIPrompt`** API (`agent: analyst`), streams progress updates into Slack, and uploads chart PNGs when IQ returns a visualization.
+![Luzmo Analyst Slackbot](https://cdn.luzmo.com/showcases/slackbot-example-ss.png)
+
+A Slack bot that answers data questions via Luzmo's hosted **`/AIPrompt`** API (`agent: analyst`), streams progress updates into Slack, and uploads chart PNGs when Luzmo returns a visualization.
 
 ## Prerequisites
 
 - Node.js 20+
-- Luzmo account with **IQ addon** enabled (required for `agent: analyst`)
+- Luzmo account with the **IQ addon** enabled (required for `agent: analyst`)
 - Luzmo API key + token per authorized user (see `users.json`)
 - A Slack App configured with Socket Mode (see [Slack App Setup](#slack-app-setup))
 
@@ -104,7 +118,7 @@ The bot will:
 2. Post a "thinking" message in the thread
 3. Call `POST /0.1.0/aiprompt` with `agent: analyst` and stream progress + text
 4. Replace the message with the final answer
-5. Upload a chart PNG when IQ returns an item asset
+5. Upload a chart PNG when Luzmo returns an item asset
 
 Follow-up messages in the same Slack thread continue the Luzmo `conversation_id` automatically.
 
