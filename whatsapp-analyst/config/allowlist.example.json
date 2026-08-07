@@ -1,0 +1,22 @@
+{
+  "identities": {
+    "+32470000001": "persona-a",
+    "+32470000002": "persona-b"
+  },
+  "personas": {
+    "persona-a": {
+      "username": "whatsapp-demo-persona-a",
+      "name": "Demo Persona A",
+      "email": "persona-a@example.com",
+      "suborganization": "tenant-a",
+      "tenantValue": "tenant-a"
+    },
+    "persona-b": {
+      "username": "whatsapp-demo-persona-b",
+      "name": "Demo Persona B",
+      "email": "persona-b@example.com",
+      "suborganization": "tenant-b",
+      "tenantValue": "tenant-b"
+    }
+  }
+}
