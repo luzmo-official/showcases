@@ -1,0 +1,9 @@
+node_modules/
+dist/
+data/
+.env
+config/allowlist.json
+*.log
+.DS_Store
+tmp/
+*.png
