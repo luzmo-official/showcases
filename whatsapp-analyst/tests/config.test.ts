@@ -29,4 +29,30 @@ describe('loadConfig', () => {
     } as NodeJS.ProcessEnv);
     expect(config.chartTheme).toEqual({ id: 'vivid' });
   });
+
+  it('defaults to sqlite storage', () => {
+    const config = loadConfig({ ...baseEnv } as NodeJS.ProcessEnv);
+    expect(config.STORAGE_BACKEND).toBe('sqlite');
+    expect(config.SQLITE_PATH).toBe('./data/whatsapp-analyst.sqlite');
+  });
+
+  it('requires DYNAMODB_TABLE_NAME for dynamodb backend', () => {
+    expect(() =>
+      loadConfig({
+        ...baseEnv,
+        STORAGE_BACKEND: 'dynamodb',
+      } as NodeJS.ProcessEnv)
+    ).toThrow(/DYNAMODB_TABLE_NAME/);
+  });
+
+  it('accepts dynamodb backend with table name', () => {
+    const config = loadConfig({
+      ...baseEnv,
+      STORAGE_BACKEND: 'dynamodb',
+      DYNAMODB_TABLE_NAME: 'whatsapp-analyst',
+      AWS_REGION: 'eu-west-1',
+    } as NodeJS.ProcessEnv);
+    expect(config.STORAGE_BACKEND).toBe('dynamodb');
+    expect(config.DYNAMODB_TABLE_NAME).toBe('whatsapp-analyst');
+  });
 });

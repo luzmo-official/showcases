@@ -5,6 +5,11 @@ import { resolve } from 'node:path';
 
 loadDotenv();
 
+const emptyToUndefined = z
+  .string()
+  .optional()
+  .transform((v) => (v && v.trim() ? v.trim() : undefined));
+
 const envSchema = z.object({
   PORT: z.coerce.number().int().positive().default(3000),
   PUBLIC_BASE_URL: z
@@ -26,14 +31,16 @@ const envSchema = z.object({
    * Optional built-in theme id or account theme UUID.
    * When unset / empty, chart exports leave theme unset (showcase default).
    */
-  LUZMO_THEME_ID: z
-    .string()
-    .optional()
-    .transform((v) => (v && v.trim() ? v.trim() : undefined)),
+  LUZMO_THEME_ID: emptyToUndefined,
   /** IANA timezone for /AIPrompt (default UTC for showcase neutrality) */
   LUZMO_TIMEZONE_ID: z.string().min(1).default('UTC'),
   ALLOWLIST_PATH: z.string().default('./config/allowlist.json'),
-  SQLITE_PATH: z.string().default('./data/whatsapp-iq.sqlite'),
+  /** Inline allowlist JSON for Lambda (takes precedence over ALLOWLIST_PATH). */
+  ALLOWLIST_JSON: emptyToUndefined,
+  SQLITE_PATH: z.string().default('./data/whatsapp-analyst.sqlite'),
+  STORAGE_BACKEND: z.enum(['sqlite', 'dynamodb']).default('sqlite'),
+  DYNAMODB_TABLE_NAME: emptyToUndefined,
+  AWS_REGION: emptyToUndefined,
   CONVERSATION_IDLE_MINUTES: z.coerce.number().int().positive().default(60),
   AIPROMPT_TIMEOUT_MS: z.coerce.number().int().positive().default(120_000),
 });
@@ -55,6 +62,11 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
     throw new Error(`Invalid configuration:\n${details}`);
   }
   const data = parsed.data;
+  if (data.STORAGE_BACKEND === 'dynamodb' && !data.DYNAMODB_TABLE_NAME) {
+    throw new Error(
+      'Invalid configuration:\n  - DYNAMODB_TABLE_NAME: Required when STORAGE_BACKEND=dynamodb'
+    );
+  }
   return {
     ...data,
     LUZMO_HOST: data.LUZMO_HOST.replace(/\/$/, ''),

@@ -62,7 +62,11 @@ cp config/allowlist.example.json config/allowlist.json
 | `LUZMO_THEME_ID` | Optional theme UUID or built-in id. Empty/unset = no theme |
 | `LUZMO_TIMEZONE_ID` | IANA timezone for `/AIPrompt` (default `UTC`) |
 | `ALLOWLIST_PATH` | Path to allowlist JSON (default `./config/allowlist.json`) |
-| `SQLITE_PATH` | SQLite file for dedupe + conversations |
+| `ALLOWLIST_JSON` | Inline allowlist JSON (Lambda); overrides `ALLOWLIST_PATH` when set |
+| `STORAGE_BACKEND` | `sqlite` (local default) or `dynamodb` (Lambda) |
+| `SQLITE_PATH` | SQLite file for dedupe + conversations (default `./data/whatsapp-analyst.sqlite`) |
+| `DYNAMODB_TABLE_NAME` | Required when `STORAGE_BACKEND=dynamodb` |
+| `AWS_REGION` | Optional AWS region for the DynamoDB client |
 | `CONVERSATION_IDLE_MINUTES` | Luzmo conversation idle TTL (default `60`) |
 | `AIPROMPT_TIMEOUT_MS` | `/AIPrompt` timeout (default `120000`) |
 
@@ -119,7 +123,17 @@ WhatsApp -> signed webhook -> persist/dedupe by wamid -> 200
 - Chart export uses the **same Embed** key/token as `/AIPrompt` (never owner credentials).
 - Optional `LUZMO_THEME_ID` is applied only on PNG export.
 - Luzmo conversation idle TTL: 60 minutes (separate from Meta’s 24h service window).
-- Storage: Node `node:sqlite` (experimental flag on `npm start` / `npm run dev`).
+- Storage: Node `node:sqlite` locally (`STORAGE_BACKEND=sqlite`); DynamoDB on Lambda.
+
+## AWS Lambda hosting
+
+For a stable HTTPS webhook (Function URL + DynamoDB), see **[HOSTING.md](./HOSTING.md)**.
+
+```bash
+npm run build:lambda   # writes dist-lambda/index.js (exports.handler)
+```
+
+Not deployed via showcases `deploy.yml` — operate the Lambda in AWS separately.
 
 ## Tests
 

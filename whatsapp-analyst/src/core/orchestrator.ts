@@ -8,7 +8,7 @@ import {
 import type { EmbedAuthService } from '../luzmo/embed-auth.js';
 import { collectAIPrompt } from '../luzmo/aiprompt-client.js';
 import { renderChartToPng } from '../luzmo/chart-export.js';
-import type { Store } from '../storage/sqlite.js';
+import type { MessageStore } from '../storage/types.js';
 import type { WhatsAppClient } from '../whatsapp/client.js';
 import {
   markdownToWhatsApp,
@@ -56,12 +56,15 @@ export class Orchestrator {
 
   constructor(
     private readonly config: AppConfig,
-    private readonly store: Store,
+    private readonly store: MessageStore,
     private readonly allowlist: Allowlist,
     private readonly embedAuth: EmbedAuthService,
     private readonly whatsapp: WhatsAppClient
   ) {}
 
+  /**
+   * Local Express path: serialize per identity without blocking the webhook 200.
+   */
   enqueueInbound(message: NormalizedInboundText): void {
     const identityHint =
       extractWhatsAppIdentity({
@@ -80,7 +83,7 @@ export class Orchestrator {
           error: error instanceof Error ? error.message : String(error),
           messageId: message.messageId,
         });
-        this.store.markFailed(
+        await this.store.markFailed(
           message.messageId,
           error instanceof Error ? error.name : 'unhandled'
         );
@@ -88,8 +91,26 @@ export class Orchestrator {
     });
   }
 
-  recoverPending(): void {
-    const rows = this.store.listRecoverable(5 * 60 * 1000);
+  /**
+   * Lambda path: await the full Luzmo/WhatsApp flow before returning HTTP 200.
+   */
+  async handleInbound(message: NormalizedInboundText): Promise<void> {
+    try {
+      await this.processMessage(message);
+    } catch (error) {
+      logger.error('Unhandled message processing error', {
+        error: error instanceof Error ? error.message : String(error),
+        messageId: message.messageId,
+      });
+      await this.store.markFailed(
+        message.messageId,
+        error instanceof Error ? error.name : 'unhandled'
+      );
+    }
+  }
+
+  async recoverPending(): Promise<void> {
+    const rows = await this.store.listRecoverable(5 * 60 * 1000);
     for (const row of rows) {
       this.enqueueInbound({
         messageId: row.message_id,
@@ -113,11 +134,11 @@ export class Orchestrator {
 
     const candidates = identityLookupCandidates(identityInput);
     if (candidates.length === 0) {
-      this.store.markFailed(message.messageId, 'missing_identity');
+      await this.store.markFailed(message.messageId, 'missing_identity');
       return;
     }
 
-    let resolved =
+    const resolved =
       candidates
         .map((c) => this.allowlist.resolve(c))
         .find((r) => r != null) ?? null;
@@ -143,25 +164,25 @@ export class Orchestrator {
       } catch {
         /* ignore */
       }
-      this.store.markFailed(message.messageId, 'unauthorized');
+      await this.store.markFailed(message.messageId, 'unauthorized');
       return;
     }
 
-    this.store.markProcessing(message.messageId);
+    await this.store.markProcessing(message.messageId);
     const text = message.text.trim();
 
     if (text.toLowerCase() === '/reset') {
-      this.store.clearConversation(resolved.identityKey);
+      await this.store.clearConversation(resolved.identityKey);
       try {
         await this.whatsapp.sendText(replyTo, 'Conversation reset.');
       } catch (error) {
         logger.error('Failed to send reset confirmation', {
           error: error instanceof Error ? error.message : String(error),
         });
-        this.store.markFailed(message.messageId, 'whatsapp_send_failed');
+        await this.store.markFailed(message.messageId, 'whatsapp_send_failed');
         return;
       }
-      this.store.markCompleted(message.messageId);
+      await this.store.markCompleted(message.messageId);
       return;
     }
 
@@ -172,16 +193,16 @@ export class Orchestrator {
         logger.error('Failed to send off-topic reply', {
           error: error instanceof Error ? error.message : String(error),
         });
-        this.store.markFailed(message.messageId, 'whatsapp_send_failed');
+        await this.store.markFailed(message.messageId, 'whatsapp_send_failed');
         return;
       }
-      this.store.markCompleted(message.messageId);
+      await this.store.markCompleted(message.messageId);
       return;
     }
 
     try {
       const embed = await this.embedAuth.resolve(resolved.persona);
-      const conversationId = this.store.getActiveConversationId(
+      const conversationId = await this.store.getActiveConversationId(
         resolved.identityKey,
         this.config.conversationIdleMs
       );
@@ -198,17 +219,17 @@ export class Orchestrator {
       });
 
       if (result.conversationId) {
-        this.store.setConversation(
+        await this.store.setConversation(
           resolved.identityKey,
           result.conversationId
         );
       } else if (conversationId) {
-        this.store.touchConversation(resolved.identityKey);
+        await this.store.touchConversation(resolved.identityKey);
       }
 
       if (result.error && !result.text) {
         await this.whatsapp.sendText(replyTo, GENERIC_ERROR);
-        this.store.markFailed(message.messageId, 'aiprompt_error');
+        await this.store.markFailed(message.messageId, 'aiprompt_error');
         return;
       }
 
@@ -240,7 +261,7 @@ export class Orchestrator {
         }
       }
 
-      this.store.markCompleted(message.messageId);
+      await this.store.markCompleted(message.messageId);
     } catch (error) {
       logger.error('Failed processing inbound message', {
         error: error instanceof Error ? error.message : String(error),
@@ -251,7 +272,7 @@ export class Orchestrator {
       } catch {
         /* ignore */
       }
-      this.store.markFailed(
+      await this.store.markFailed(
         message.messageId,
         error instanceof Error ? error.name : 'unknown'
       );

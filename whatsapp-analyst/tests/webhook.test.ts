@@ -105,24 +105,41 @@ describe('formatting', () => {
 });
 
 describe('allowlist', () => {
-  it('resolves E.164 identities to personas', () => {
-    const allowlist = new Allowlist({
-      identities: { '+32470000001': 'persona-a' },
-      personas: {
-        'persona-a': {
-          username: 'whatsapp-demo-persona-a',
-          name: 'Demo Persona A',
-          email: 'persona-a@example.com',
-          suborganization: 'tenant-a',
-          tenantValue: 'tenant-a',
-        },
+  const raw = {
+    identities: { '+32470000001': 'persona-a' },
+    personas: {
+      'persona-a': {
+        username: 'whatsapp-demo-persona-a',
+        name: 'Demo Persona A',
+        email: 'persona-a@example.com',
+        suborganization: 'tenant-a',
+        tenantValue: 'tenant-a',
       },
-    });
+    },
+  };
+
+  it('resolves E.164 identities to personas', () => {
+    const allowlist = new Allowlist(raw);
     expect(normalizeIdentityKey('32470000001')).toBe('+32470000001');
     expect(allowlist.resolve('32470000001')?.persona.tenantValue).toBe(
       'tenant-a'
     );
     expect(allowlist.resolve('+19999999999')).toBeNull();
+  });
+
+  it('loads from JSON string', () => {
+    const allowlist = Allowlist.fromJsonString(JSON.stringify(raw));
+    expect(allowlist.resolve('+32470000001')?.personaId).toBe('persona-a');
+  });
+
+  it('prefers ALLOWLIST_JSON in fromConfig', () => {
+    const allowlist = Allowlist.fromConfig({
+      ALLOWLIST_PATH: './missing.json',
+      ALLOWLIST_JSON: JSON.stringify(raw),
+    });
+    expect(allowlist.resolve('32470000001')?.persona.tenantValue).toBe(
+      'tenant-a'
+    );
   });
 });
 

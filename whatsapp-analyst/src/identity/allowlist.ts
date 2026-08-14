@@ -44,6 +44,20 @@ export class Allowlist {
     return new Allowlist(readJsonFile(path));
   }
 
+  static fromJsonString(json: string): Allowlist {
+    return new Allowlist(JSON.parse(json) as unknown);
+  }
+
+  static fromConfig(config: {
+    ALLOWLIST_JSON?: string;
+    ALLOWLIST_PATH: string;
+  }): Allowlist {
+    if (config.ALLOWLIST_JSON) {
+      return Allowlist.fromJsonString(config.ALLOWLIST_JSON);
+    }
+    return Allowlist.fromFile(config.ALLOWLIST_PATH);
+  }
+
   resolve(rawIdentity: string): ResolvedIdentity | null {
     const identityKey = normalizeIdentityKey(rawIdentity);
     const personaId = this.identities.get(identityKey);

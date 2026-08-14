@@ -2,27 +2,16 @@ import { DatabaseSync } from 'node:sqlite';
 import { mkdirSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { logger } from '../logger.js';
+import type {
+  ConversationRow,
+  InboundMessageRow,
+  MessageStore,
+  MessageStatus,
+} from './types.js';
 
-export type MessageStatus = 'received' | 'processing' | 'completed' | 'failed';
+export type { ConversationRow, InboundMessageRow, MessageStatus };
 
-export interface InboundMessageRow {
-  message_id: string;
-  identity_key: string;
-  message_text: string;
-  received_at: string;
-  processing_started_at: string | null;
-  completed_at: string | null;
-  status: MessageStatus;
-  error_code: string | null;
-}
-
-export interface ConversationRow {
-  identity_key: string;
-  luzmo_conversation_id: string;
-  last_activity_at: string;
-}
-
-export class Store {
+export class SqliteStore implements MessageStore {
   private readonly db: DatabaseSync;
 
   constructor(sqlitePath: string) {
@@ -56,11 +45,11 @@ export class Store {
   /**
    * Inserts a new inbound work item. Returns false if wamid already exists.
    */
-  tryInsertInbound(input: {
+  async tryInsertInbound(input: {
     messageId: string;
     identityKey: string;
     messageText: string;
-  }): boolean {
+  }): Promise<boolean> {
     try {
       this.db
         .prepare(
@@ -84,7 +73,7 @@ export class Store {
     }
   }
 
-  markProcessing(messageId: string): void {
+  async markProcessing(messageId: string): Promise<void> {
     this.db
       .prepare(
         `UPDATE inbound_messages
@@ -94,7 +83,7 @@ export class Store {
       .run(new Date().toISOString(), messageId);
   }
 
-  markCompleted(messageId: string): void {
+  async markCompleted(messageId: string): Promise<void> {
     this.db
       .prepare(
         `UPDATE inbound_messages
@@ -104,7 +93,7 @@ export class Store {
       .run(new Date().toISOString(), messageId);
   }
 
-  markFailed(messageId: string, errorCode: string): void {
+  async markFailed(messageId: string, errorCode: string): Promise<void> {
     this.db
       .prepare(
         `UPDATE inbound_messages
@@ -114,7 +103,7 @@ export class Store {
       .run(new Date().toISOString(), errorCode.slice(0, 200), messageId);
   }
 
-  getInbound(messageId: string): InboundMessageRow | null {
+  async getInbound(messageId: string): Promise<InboundMessageRow | null> {
     return (
       (this.db
         .prepare(`SELECT * FROM inbound_messages WHERE message_id = ?`)
@@ -122,7 +111,7 @@ export class Store {
     );
   }
 
-  listRecoverable(staleProcessingMs: number): InboundMessageRow[] {
+  async listRecoverable(staleProcessingMs: number): Promise<InboundMessageRow[]> {
     const cutoff = new Date(Date.now() - staleProcessingMs).toISOString();
     const rows = this.db
       .prepare(
@@ -149,7 +138,7 @@ export class Store {
     return rows;
   }
 
-  getConversation(identityKey: string): ConversationRow | null {
+  async getConversation(identityKey: string): Promise<ConversationRow | null> {
     return (
       (this.db
         .prepare(`SELECT * FROM conversations WHERE identity_key = ?`)
@@ -157,7 +146,10 @@ export class Store {
     );
   }
 
-  setConversation(identityKey: string, conversationId: string): void {
+  async setConversation(
+    identityKey: string,
+    conversationId: string
+  ): Promise<void> {
     this.db
       .prepare(
         `INSERT INTO conversations (identity_key, luzmo_conversation_id, last_activity_at)
@@ -169,7 +161,7 @@ export class Store {
       .run(identityKey, conversationId, new Date().toISOString());
   }
 
-  touchConversation(identityKey: string): void {
+  async touchConversation(identityKey: string): Promise<void> {
     this.db
       .prepare(
         `UPDATE conversations SET last_activity_at = ? WHERE identity_key = ?`
@@ -177,7 +169,7 @@ export class Store {
       .run(new Date().toISOString(), identityKey);
   }
 
-  clearConversation(identityKey: string): void {
+  async clearConversation(identityKey: string): Promise<void> {
     this.db
       .prepare(`DELETE FROM conversations WHERE identity_key = ?`)
       .run(identityKey);
@@ -186,11 +178,11 @@ export class Store {
   /**
    * Returns conversation_id when last activity is within idleMs.
    */
-  getActiveConversationId(
+  async getActiveConversationId(
     identityKey: string,
     idleMs: number
-  ): string | undefined {
-    const row = this.getConversation(identityKey);
+  ): Promise<string | undefined> {
+    const row = await this.getConversation(identityKey);
     if (!row) return undefined;
     const last = Date.parse(row.last_activity_at);
     if (Number.isNaN(last) || Date.now() - last > idleMs) {
@@ -209,3 +201,6 @@ export class Store {
     }
   }
 }
+
+/** @deprecated Use SqliteStore */
+export const Store = SqliteStore;

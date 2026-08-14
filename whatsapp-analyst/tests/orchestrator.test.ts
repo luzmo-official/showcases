@@ -19,16 +19,16 @@ describe('sqlite store', () => {
     rmSync(dir, { recursive: true, force: true });
   });
 
-  it('deduplicates by wamid', () => {
+  it('deduplicates by wamid', async () => {
     expect(
-      store.tryInsertInbound({
+      await store.tryInsertInbound({
         messageId: 'wamid.1',
         identityKey: '+32470000001',
         messageText: 'hello',
       })
     ).toBe(true);
     expect(
-      store.tryInsertInbound({
+      await store.tryInsertInbound({
         messageId: 'wamid.1',
         identityKey: '+32470000001',
         messageText: 'hello again',
@@ -36,24 +36,24 @@ describe('sqlite store', () => {
     ).toBe(false);
   });
 
-  it('tracks conversation idle window', () => {
-    store.setConversation('+32470000001', 'conv-1');
-    expect(store.getActiveConversationId('+32470000001', 60_000)).toBe(
+  it('tracks conversation idle window', async () => {
+    await store.setConversation('+32470000001', 'conv-1');
+    expect(await store.getActiveConversationId('+32470000001', 60_000)).toBe(
       'conv-1'
     );
-    store.clearConversation('+32470000001');
+    await store.clearConversation('+32470000001');
     expect(
-      store.getActiveConversationId('+32470000001', 60_000)
+      await store.getActiveConversationId('+32470000001', 60_000)
     ).toBeUndefined();
   });
 
-  it('recovers received work', () => {
-    store.tryInsertInbound({
+  it('recovers received work', async () => {
+    await store.tryInsertInbound({
       messageId: 'wamid.2',
       identityKey: '+32470000001',
       messageText: 'q',
     });
-    const rows = store.listRecoverable(5 * 60 * 1000);
+    const rows = await store.listRecoverable(5 * 60 * 1000);
     expect(rows.some((r) => r.message_id === 'wamid.2')).toBe(true);
   });
 });
