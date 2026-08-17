@@ -15,7 +15,7 @@
     "@luzmo/icons": "^1.0.1-alpha.41",
     "@luzmo/lucero": "^1.0.2",
     "@luzmo/react-embed": "^6.8.5",
-    "next": "^16.2.9",
+    "next": "^16.3.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-grid-layout": "^2.2.3",
@@ -32,6 +32,6 @@
     "typescript": "^6.0.3"
   },
   "overrides": {
-    "postcss": "^8.5.16"
+    "postcss": "^8.5.26"
   }
 }
