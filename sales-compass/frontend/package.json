@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@angular/build": "21.0.5",
-    "@angular/cli": "21.0.5",
+    "@angular/cli": "21.2.30",
     "@angular/compiler-cli": "21.0.8",
     "@angular/platform-browser-dynamic": "21.0.8",
     "@vitest/coverage-v8": "4.0.17",
